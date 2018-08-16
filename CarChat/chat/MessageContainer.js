@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 
 import { Platform, StyleSheet, Text, View, ListView } from 'react-native';
 import MessageModel from '../data/message'
+import User from '../data/msgUser'
 import Message from './Message'
+
 
 export default class MessageContainer extends Component {
 
-    messages = [new MessageModel(1,'ldx','hello'),new MessageModel(2,'ldx2','world')
-    ,new MessageModel(3,'ldx','xxxx')];
+    messages = [new MessageModel(1,new User(1,'ldx'),'hello'),new MessageModel(2,new User(2,'ldx2'),'world')
+    ,new MessageModel(3,new User(1,'ldx'),'xxxx')];
 
     constructor(props) {
         super(props);
@@ -50,7 +52,7 @@ export default class MessageContainer extends Component {
         // };
 
 
-        return <Message msg ={message.msg}/>;
+        return <Message key = {message._id} msg ={message}/>;
         
     }
 }

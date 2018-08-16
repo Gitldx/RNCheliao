@@ -1,7 +1,7 @@
 export default class Message{
-    constructor(id,user,msg){
+    constructor(id,user,text){
         this._id = id;
         this.user = user;
-        this.msg = msg;
+        this.text = text;
     }
 }

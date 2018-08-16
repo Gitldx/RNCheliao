@@ -8,6 +8,7 @@ export default class Message extends React.Component {
 
     constructor(props) {
         super(props);
+
     }
 
     render() {
@@ -15,9 +16,17 @@ export default class Message extends React.Component {
             <View>
                 <GlobalContext.Consumer>
                     {userInfo =>
-                        <Text>
-                            {this.props.msg + "--->" + userInfo.userId}
-                        </Text>
+                        <View style={[
+                            styles[this.isCurrentUser(userInfo) ? "right" : "left"].container,
+                            // { marginBottom: sameUser ? 2 : 10 },
+                            // !this.props.inverted && { marginBottom: 2 },
+                            // this.props.containerStyle[this.props.position],
+                        ]}>
+                            {this.isCurrentUser(userInfo) ? null : <Text>头像</Text>}
+                            <Text>{this.props.msg.text}</Text>
+                            {this.isCurrentUser(userInfo)  ? <Text>头像</Text> : null}
+                        </View>
+
                     }
                 </GlobalContext.Consumer>
 
@@ -25,9 +34,35 @@ export default class Message extends React.Component {
         )
 
     }
+
+    isCurrentUser = (userInfo)=>{
+        return this.props.msg.user.userId === userInfo.userId
+    }
 }
 
 
 Message.prototypes = {
-    msg: PropTypes.string,
+    msg: PropTypes.object,
 }
+
+
+const styles = {
+    left: StyleSheet.create({
+      container: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-start',
+        marginLeft: 8,
+        marginRight: 0,
+      },
+    }),
+    right: StyleSheet.create({
+      container: {
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        marginLeft: 0,
+        marginRight: 8,
+      },
+    }),
+  };
