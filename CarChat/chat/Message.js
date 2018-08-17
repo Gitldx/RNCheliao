@@ -3,6 +3,7 @@ import React from 'react';
 import { View, ViewPropTypes, StyleSheet, Text } from 'react-native';
 
 import GlobalContext from './globalContext'
+import Bubble from './Bubble'
 
 export default class Message extends React.Component {
 
@@ -17,13 +18,14 @@ export default class Message extends React.Component {
                 <GlobalContext.Consumer>
                     {userInfo =>
                         <View style={[
-                            styles[this.isCurrentUser(userInfo) ? "right" : "left"].container,
+                            styles[this.getPostion(userInfo)].container,
                             // { marginBottom: sameUser ? 2 : 10 },
                             // !this.props.inverted && { marginBottom: 2 },
                             // this.props.containerStyle[this.props.position],
                         ]}>
                             {this.isCurrentUser(userInfo) ? null : <Text>头像</Text>}
-                            <Text>{this.props.msg.text}</Text>
+                            {/* <Text>{this.props.msg.text}</Text> */}
+                            <Bubble position = {this.getPostion(userInfo)} messageText = {this.props.msg.text}/>
                             {this.isCurrentUser(userInfo)  ? <Text>头像</Text> : null}
                         </View>
 
@@ -36,7 +38,11 @@ export default class Message extends React.Component {
     }
 
     isCurrentUser = (userInfo)=>{
-        return this.props.msg.user.userId === userInfo.userId
+        return this.props.msg.msgUser.userId === userInfo.userId
+    }
+
+    getPostion = (userInfo)=>{
+        return this.isCurrentUser(userInfo) ? "right" : "left";
     }
 }
 

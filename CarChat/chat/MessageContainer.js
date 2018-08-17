@@ -35,7 +35,7 @@ export default class MessageContainer extends Component {
         if (!message._id && message._id !== 0) {
             console.warn('GiftedChat: `_id` is missing for message', JSON.stringify(message));
         }
-        if (!message.user) {
+        if (!message.msgUser) {
             if (!message.system) {
                 console.warn('GiftedChat: `user` is missing for message', JSON.stringify(message));
             }
