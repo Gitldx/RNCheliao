@@ -9,7 +9,7 @@ import Message from './Message'
 export default class MessageContainer extends Component {
 
     messages = [new MessageModel(1,new User(1,'ldx'),'hello'),new MessageModel(2,new User(2,'ldx2'),'world')
-    ,new MessageModel(3,new User(1,'ldx'),'xxxx')];
+    ,new MessageModel(3,new User(1,'ldx'),'fhksfhksdhfkjshkhdshgshgks')];
 
     constructor(props) {
         super(props);
