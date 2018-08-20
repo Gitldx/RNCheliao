@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Platform, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { Platform, StyleSheet, Text, View, TextInput, Button,KeyboardAvoidingView } from 'react-native';
 import Color from '../data/Colors';
 
 
@@ -17,8 +17,8 @@ export default class InputGroup extends Component {
 
     render() {
         return (
-            <View style={styles.primary}>
-            
+            <KeyboardAvoidingView style={styles.primary} behavior="height">
+               
                 <TextInput ref={(input=>{this.input = input})} style={styles.textInput} placeholder="输入消息..." multiline={true} 
                 // onChangeText = {(text)=>this.setState({message : text})}  RN 的bug，输入的次数越多，反应越慢
                 // value = {this.state.message}
@@ -30,8 +30,8 @@ export default class InputGroup extends Component {
                     </View>
                 }
 
-
-            </View>
+                
+            </KeyboardAvoidingView>
 
         )
 
@@ -43,7 +43,7 @@ export default class InputGroup extends Component {
 
     onBlur = ()=>{
         // console.warn(this.input._lastNativeText);
-        if(this.input._lastNativeText.length > 0){return;}
+        if(this.input._lastNativeText && this.input._lastNativeText.length > 0){return;}
         this.setState({focusing : false});
     }
 
@@ -97,7 +97,8 @@ const styles = StyleSheet.create({
         }),
 
     },
-    accessory: {
-        height: 44,
-    },
 });
+
+
+
+
