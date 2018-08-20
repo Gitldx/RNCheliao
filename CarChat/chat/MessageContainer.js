@@ -10,15 +10,18 @@ import EarlierLoader from './EarlierLoader'
 
 export default class MessageContainer extends Component {
 
-    messages = [new MessageModel(1,new User(1,'ldx'),'hello',msgType.NORMAL),new MessageModel(2,new User(2,'ldx2'),'world',msgType.NORMAL)
-    ,new MessageModel(3,undefined,'系统消息',msgType.SYSTEM),new MessageModel(4,new User(1,'ldx'),'fhksfhksdhfkjshkhdshgshgks',msgType.NORMAL)];
-
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         this.state = {
-            dataSource: ds.cloneWithRows(this.messages),
+            dataSource: ds.cloneWithRows(this.props.messages),
         };
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            dataSource : this.state.dataSource.cloneWithRows(nextProps.messages)
+        })
     }
 
     render() {
@@ -35,6 +38,7 @@ export default class MessageContainer extends Component {
 
 
     renderRow = (message) => {
+
         if (!message._id && message._id !== 0) {
             console.warn('GiftedChat: `_id` is missing for message', JSON.stringify(message));
         }
@@ -64,8 +68,10 @@ export default class MessageContainer extends Component {
     }
 
     componentDidUpdate(){
-        console.warn("MessageContainer reRender")
+        // console.warn("MessageContainer reRender")
     }
+
+
 }
 
 

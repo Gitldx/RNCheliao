@@ -11,15 +11,17 @@ export default class InputGroup extends Component {
         super(props);
         this.state = {
             focusing: false,
-            message : "",
+            message : ""
         }
     }
 
     render() {
         return (
             <View style={styles.primary}>
+            
                 <TextInput ref={(input=>{this.input = input})} style={styles.textInput} placeholder="输入消息..." multiline={true} 
-                onChangeText = {(text)=>this.setState({message : text})} value = {this.state.message}
+                // onChangeText = {(text)=>this.setState({message : text})}  RN 的bug，输入的次数越多，反应越慢
+                // value = {this.state.message}
                 onFocus={this.onFocus} onBlur={this.onBlur}/>
                 {
                     this.state.focusing && 
@@ -40,14 +42,18 @@ export default class InputGroup extends Component {
     }
 
     onBlur = ()=>{
-        
-        if(this.state.message.length > 0){return;}
+        // console.warn(this.input._lastNativeText);
+        if(this.input._lastNativeText.length > 0){return;}
         this.setState({focusing : false});
     }
 
     onSend = ()=>{
-        this.setState({message:""});
+        // this.setState({message:""});
+        this.input.clear();
+        
+        this.props.onSend(this.input._lastNativeText);
 
+        this.input._lastNativeText = "";    
     }
 }
 
