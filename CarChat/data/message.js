@@ -4,6 +4,7 @@ export default class Message{
         this.msgUser = msgUser;
         this.text = text;
         this.msgType = msgType;
+        this.key = id.toString();
     }
 }
 

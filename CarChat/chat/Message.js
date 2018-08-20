@@ -60,6 +60,7 @@ export default class Message extends React.Component {
     }
 
     isCurrentUser = (userInfo) => {
+        // alert(`isCurrentUser --> ${JSON.stringify(this.props.msg)}`)
         return this.props.msg.msgUser.userId == userInfo.userId
     }
 

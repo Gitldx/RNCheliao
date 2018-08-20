@@ -30,7 +30,7 @@ export default class InputGroup extends Component {
                     </View>
                 }
 
-                
+               
             </KeyboardAvoidingView>
 
         )
