@@ -31,7 +31,6 @@ export default class UserTitle extends React.Component {
     }
 
     isCurrentUser = (userInfo) => {
-
         return this.props.userInfo.userId == userInfo.userId
     }
 }

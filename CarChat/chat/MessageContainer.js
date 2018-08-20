@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 
 import { Platform, StyleSheet, Text, View, ListView } from 'react-native';
-import MessageModel from '../data/message'
+import MessageModel,{msgType} from '../data/message'
 import User from '../data/msgUser'
 import Message from './Message'
+import EarlierLoader from './EarlierLoader'
+
 
 
 export default class MessageContainer extends Component {
 
-    messages = [new MessageModel(1,new User(1,'ldx'),'hello'),new MessageModel(2,new User(2,'ldx2'),'world')
-    ,new MessageModel(3,new User(1,'ldx'),'fhksfhksdhfkjshkhdshgshgks')];
+    messages = [new MessageModel(1,new User(1,'ldx'),'hello',msgType.NORMAL),new MessageModel(2,new User(2,'ldx2'),'world',msgType.NORMAL)
+    ,new MessageModel(3,undefined,'系统消息',msgType.SYSTEM),new MessageModel(4,new User(1,'ldx'),'fhksfhksdhfkjshkhdshgshgks',msgType.NORMAL)];
 
     constructor(props) {
         super(props);
@@ -25,6 +27,7 @@ export default class MessageContainer extends Component {
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}
+                    renderHeader={this.renderEarlierLoader}
                 />
             </View>
         )
@@ -36,7 +39,7 @@ export default class MessageContainer extends Component {
             console.warn('GiftedChat: `_id` is missing for message', JSON.stringify(message));
         }
         if (!message.msgUser) {
-            if (!message.system) {
+            if (!message.msgType == msgType.SYSTEM) {
                 console.warn('GiftedChat: `user` is missing for message', JSON.stringify(message));
             }
             message.user = {};
@@ -54,6 +57,14 @@ export default class MessageContainer extends Component {
 
         return <Message key = {message._id} msg ={message}/>;
         
+    }
+
+    renderEarlierLoader=()=>{
+        return <EarlierLoader/>
+    }
+
+    componentDidUpdate(){
+        console.warn("MessageContainer reRender")
     }
 }
 

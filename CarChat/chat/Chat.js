@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import MessageContainer from './MessageContainer'
+import InputGroup from './InputGroup'
 import GlobalContext from './globalContext'
 
 export default class Chat extends Component {
@@ -22,6 +23,7 @@ export default class Chat extends Component {
             <View style={styles.container} onLayout={this.onMainViewLayout}>
                 <GlobalContext.Provider value = {this.state.userInfo}>
                     <MessageContainer/>
+                    <InputGroup/>
                 </GlobalContext.Provider>
             </View>
         );
@@ -41,7 +43,7 @@ export default class Chat extends Component {
         // if (this.getIsFirstLayout() === true) {
         //     this.setIsFirstLayout(false);
         // }
-        alert("dfddf")
+        // alert("dfddf")
     }
 }
 

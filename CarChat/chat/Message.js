@@ -4,8 +4,10 @@ import { View, ViewPropTypes, StyleSheet, Text, Image, TouchableOpacity } from '
 
 import GlobalContext from './globalContext'
 import Bubble from './Bubble'
+import SystemMessage from './SystemMessage'
 import UserTitle from './UserTitle'
 import Color from '../data/Colors'
+import { msgType } from '../data/message'
 
 export default class Message extends React.Component {
 
@@ -15,7 +17,8 @@ export default class Message extends React.Component {
     }
 
     render() {
-        return (
+
+        const msg = this.props.msg.msgType == msgType.SYSTEM ? <SystemMessage msg = {this.props.msg}/> :
             <View>
                 <GlobalContext.Consumer>
                     {userInfo =>
@@ -27,7 +30,7 @@ export default class Message extends React.Component {
                         ]}>
                             {this.isCurrentUser(userInfo) ? null : this.renderAvatar(userInfo)}
                             <View style={styles[this.getPostion(userInfo)].bubbleWrapple}>
-                                <UserTitle userInfo = {this.props.msg.msgUser}/>
+                                <UserTitle userInfo={this.props.msg.msgUser} />
                                 <Bubble position={this.getPostion(userInfo)} messageText={this.props.msg.text} />
                             </View>
 
@@ -38,7 +41,8 @@ export default class Message extends React.Component {
                 </GlobalContext.Consumer>
 
             </View>
-        )
+
+        return msg;
 
     }
 
@@ -56,7 +60,6 @@ export default class Message extends React.Component {
     }
 
     isCurrentUser = (userInfo) => {
-
         return this.props.msg.msgUser.userId == userInfo.userId
     }
 
@@ -93,8 +96,8 @@ const styles = {
             marginRight: 8,
         },
     }),
-    bubbleWrapple:{
-        flexDirection:"column",
+    bubbleWrapple: {
+        flexDirection: "column",
     },
     avatarStyle: {
         justifyContent: 'center',
