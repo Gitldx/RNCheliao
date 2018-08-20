@@ -11,7 +11,7 @@ export default class InputGroup extends Component {
         super(props);
         this.state = {
             focusing: false,
-            message : ""
+            // message : ""
         }
     }
 
