@@ -10,6 +10,16 @@ import User from '../data/msgUser'
 
 export default class Chat extends Component {
 
+    static navigatorStyle = {
+        // drawUnderNavBar: true,
+        // navBarTranslucent: true,
+        navBarTextColor: '#ffffff',
+        navBarHeight: 40,
+        navBarBackgroundColor: '#0084ff',
+        tabBarHidden: false,
+        
+      };
+
     id = 0;
     messages = [new MessageModel(this.id++,new User(1,'ldx'),'hello',msgType.NORMAL),new MessageModel(this.id++,new User(2,'ldx2'),'world',msgType.NORMAL)
     ,new MessageModel(this.id++,undefined,'系统消息',msgType.SYSTEM),new MessageModel(this.id++,new User(1,'ldx'),'fhksfhksdhfkjshkhdshgshgks',msgType.NORMAL)];
