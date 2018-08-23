@@ -97,6 +97,8 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
+
+
     defaultConfig {
         applicationId "com.carchat"
         minSdkVersion rootProject.ext.minSdkVersion

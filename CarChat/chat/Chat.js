@@ -3,10 +3,14 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import MessageContainer from './MessageContainer'
 import InputGroup from './InputGroup'
+import StationNotifier from '../common/StationNotifier'
+import StationAnswer from '../common/StationAnswer'
+import SlideBizAdv from '../common/SlideBizAdv'
 import GlobalContext from './globalContext'
 
 import MessageModel,{msgType} from '../data/message'
 import User from '../data/msgUser'
+
 
 export default class Chat extends Component {
 
@@ -30,8 +34,22 @@ export default class Chat extends Component {
             userInfo: {
                 userId: 1,
             },
-            messages : this.messages
+            messages : this.messages,
+            notifyStation : false,
+            answerStation : false,
         }
+    }
+
+
+    componentDidMount(){
+        setInterval(()=>{
+            this.setState({notifyStation: true})
+        },10000)
+
+
+        setInterval(()=>{
+            this.setState({answerStation: true})
+        },3000)
     }
 
     render() {
@@ -41,6 +59,14 @@ export default class Chat extends Component {
                 <GlobalContext.Provider value={this.state.userInfo}>
                     <MessageContainer messages = {this.state.messages}/>
                     <InputGroup onSend = {this.pushMessage}/>
+                    <SlideBizAdv/>
+                    {
+                        this.state.notifyStation == true  && <StationNotifier onFadeOut = {this.onStationNotifierFadeOut} onPress={this.onStationNotifierPressed}/>
+                    }
+                    {
+                        this.state.answerStation == true && <StationAnswer onFadeOut = {this.onStationAnswerFadeOut} onPress = {this.onStationAnswerPressed}/>
+                    }
+                    
                 </GlobalContext.Provider>
             </View>
         );
@@ -74,6 +100,23 @@ export default class Chat extends Component {
     }
 
 
+
+    onStationNotifierPressed = ()=>{
+        this.setState({notifyStation : false})
+    }
+
+    onStationNotifierFadeOut = ()=>{
+        this.setState({notifyStation : false})
+    }
+
+    onStationAnswerPressed = (flag)=>{
+        alert(flag)
+        this.setState({answerStation : false})
+    }
+
+    onStationAnswerFadeOut = ()=>{
+        this.setState({answerStation : false})
+    }
 }
 
 
@@ -81,5 +124,7 @@ export default class Chat extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection:'column',
+        justifyContent : 'center'
     },
 });

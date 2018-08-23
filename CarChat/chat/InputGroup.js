@@ -53,7 +53,7 @@ export default class InputGroup extends Component {
         
         this.props.onSend(this.input._lastNativeText);
 
-        this.input._lastNativeText = "";    
+        this.input._lastNativeText = "";   // this.input.setNativeProps({text:''}) 
     }
 }
 
