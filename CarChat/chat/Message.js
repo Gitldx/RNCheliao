@@ -24,6 +24,7 @@ export default class Message extends React.Component {
                     {userInfo =>
                         <View style={[
                             styles[this.getPostion(userInfo)].container,
+                            { marginBottom : this.isCurrentUser(userInfo) ? 2 : 10 }
                             // { marginBottom: sameUser ? 2 : 10 },
                             // !this.props.inverted && { marginBottom: 2 },
                             // this.props.containerStyle[this.props.position],
