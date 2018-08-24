@@ -8,8 +8,12 @@ import StationAnswer from '../common/StationAnswer'
 import SlideBizAdv from '../common/SlideBizAdv'
 import GlobalContext from './globalContext'
 
-import MessageModel,{msgType} from '../data/message'
+import MessageModel, { msgType } from '../data/message'
 import User from '../data/msgUser'
+
+import { DeviceEventEmitter } from 'react-native';
+
+import { NativeModules } from "react-native";
 
 
 export default class Chat extends Component {
@@ -21,12 +25,12 @@ export default class Chat extends Component {
         navBarHeight: 40,
         navBarBackgroundColor: '#0084ff',
         tabBarHidden: false,
-        
-      };
+
+    };
 
     id = 0;
-    messages = [new MessageModel(this.id++,new User(1,'ldx'),'hello',msgType.NORMAL),new MessageModel(this.id++,new User(2,'ldx2'),'world',msgType.NORMAL)
-    ,new MessageModel(this.id++,undefined,'系统消息',msgType.SYSTEM),new MessageModel(this.id++,new User(1,'ldx'),'fhksfhksdhfkjshkhdshgshgks',msgType.NORMAL)];
+    messages = [new MessageModel(this.id++, new User(1, 'ldx'), 'hello', msgType.NORMAL), new MessageModel(this.id++, new User(2, 'ldx2'), 'world', msgType.NORMAL)
+        , new MessageModel(this.id++, undefined, '系统消息', msgType.SYSTEM), new MessageModel(this.id++, new User(1, 'ldx'), 'fhksfhksdhfkjshkhdshgshgks', msgType.NORMAL)];
 
     constructor(props) {
         super(props);
@@ -34,39 +38,44 @@ export default class Chat extends Component {
             userInfo: {
                 userId: 1,
             },
-            messages : this.messages,
-            notifyStation : false,
-            answerStation : false,
+            messages: this.messages,
+            notifyStation: false,
+            answerStation: false,
         }
     }
 
 
-    componentDidMount(){
-        setInterval(()=>{
-            this.setState({notifyStation: true})
-        },10000)
+    componentDidMount() {
+        setInterval(() => {
+            this.setState({ notifyStation: true })
+        }, 10000)
 
 
-        setInterval(()=>{
-            this.setState({answerStation: true})
-        },3000)
+        setInterval(() => {
+            this.setState({ answerStation: true })
+        }, 3000)
+
+        DeviceEventEmitter.addListener('carChatMsg', (e) => {
+            console.warn("receive message!")
+        });
     }
+
 
     render() {
         return (
 
             <View style={styles.container} onLayout={this.onMainViewLayout}>
                 <GlobalContext.Provider value={this.state.userInfo}>
-                    <MessageContainer messages = {this.state.messages}/>
-                    <InputGroup onSend = {this.pushMessage}/>
-                    <SlideBizAdv/>
+                    <MessageContainer messages={this.state.messages} />
+                    <InputGroup onSend={this.pushMessage} />
+                    <SlideBizAdv />
                     {
-                        this.state.notifyStation == true  && <StationNotifier onFadeOut = {this.onStationNotifierFadeOut} onPress={this.onStationNotifierPressed}/>
+                        this.state.notifyStation == true && <StationNotifier onFadeOut={this.onStationNotifierFadeOut} onPress={this.onStationNotifierPressed} />
                     }
                     {
-                        this.state.answerStation == true && <StationAnswer onFadeOut = {this.onStationAnswerFadeOut} onPress = {this.onStationAnswerPressed}/>
+                        this.state.answerStation == true && <StationAnswer onFadeOut={this.onStationAnswerFadeOut} onPress={this.onStationAnswerPressed} />
                     }
-                    
+
                 </GlobalContext.Provider>
             </View>
         );
@@ -90,9 +99,9 @@ export default class Chat extends Component {
     }
 
 
-    pushMessage=(message)=> {
+    pushMessage = (message) => {
         this.messages = this.messages.concat(
-            new MessageModel(this.id++,new User(1,'ldx'),message,msgType.NORMAL)
+            new MessageModel(this.id++, new User(1, 'ldx'), message, msgType.NORMAL)
         )
         this.setState({
             messages: this.messages
@@ -101,21 +110,27 @@ export default class Chat extends Component {
 
 
 
-    onStationNotifierPressed = ()=>{
-        this.setState({notifyStation : false})
+    onStationNotifierPressed = () => {
+        this.setState({ notifyStation: false })
+        NativeModules.CarChatCommunication.notify("carChatMsg")
+        NativeModules.CarChatCommunication.login("ldx", "1112234", (msg) => {
+            console.warn(msg)
+        },
+            () => { }
+        )
     }
 
-    onStationNotifierFadeOut = ()=>{
-        this.setState({notifyStation : false})
+    onStationNotifierFadeOut = () => {
+        this.setState({ notifyStation: false })
     }
 
-    onStationAnswerPressed = (flag)=>{
+    onStationAnswerPressed = (flag) => {
         alert(flag)
-        this.setState({answerStation : false})
+        this.setState({ answerStation: false })
     }
 
-    onStationAnswerFadeOut = ()=>{
-        this.setState({answerStation : false})
+    onStationAnswerFadeOut = () => {
+        this.setState({ answerStation: false })
     }
 }
 
@@ -124,7 +139,7 @@ export default class Chat extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection:'column',
-        justifyContent : 'center'
+        flexDirection: 'column',
+        justifyContent: 'center'
     },
 });
